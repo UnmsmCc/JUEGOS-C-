@@ -1,0 +1,95 @@
+//librerias
+#include<windows.h>
+#include <GL/glut.h>
+#include<math.h>
+
+int num_1=0;
+void init2D(float r, float g, float b)
+{
+	glClearColor(r,g,b,0.0);
+	glMatrixMode (GL_PROJECTION);
+	gluOrtho2D (-10.0, 10.0, -10.0, 10.0);
+}
+//-----------------------------------------------------
+//FUNCION SECTOR CIRCULAR
+//------------------------------------------------------
+void Sector(float *Color, float *Centro, float *theta,float r){
+    if(r==4){
+        glBegin(GL_POLYGON);
+        glColor3f(0.0,0.5,0.0);
+        glVertex2f(Centro[0],Centro[1]);
+        glColor3fv(Color);
+        for(float t=theta[0]+0.05;t<=theta[1]-0.05;t=t+0.00001){
+            glColor3f(0.0,0.5,0.0);
+            glVertex2f(r*cos(t),r*sin(t));
+        }
+    glEnd();
+    }else{
+        glBegin(GL_POLYGON);
+        glColor3fv(Color);
+        glVertex2f(Centro[0],Centro[1]);
+        for(float t=theta[0]+0.05;t<=theta[1]-0.05;t=t+0.00001){
+        glVertex2f(r*cos(t),r*sin(t));
+        }
+    glEnd();
+    }
+
+}
+//------------------------------------------------------------
+
+void display(void)
+{
+    glClear(GL_COLOR_BUFFER_BIT);
+
+	//Colores
+	float ColorB[3]={1.0,1.0,1.0};
+	float ColorN[3]={0.0,0.0,0.0};
+	float ColorV[3]={0.0,0.4,0.0};
+	//-----------------------------
+	//Cerco I
+	float Centro1[2]={0.25,0.25};
+	float theta1[2]={0,M_PI_2};
+	Sector(ColorB,Centro1,theta1,6);
+	Sector(ColorN,Centro1,theta1,5.3);
+	//------------------------------
+	//Cerco II
+	float Centro2[2]={-0.25,0.25};
+	float theta2[2]={M_PI_2,M_PI};
+	Sector(ColorB,Centro2,theta2,6);
+	Sector(ColorN,Centro2,theta2,5.3);
+	//-----------------------------
+	//Cerco III
+	float Centro3[2]={-0.25,-0.25};
+	float theta3[2]={M_PI,3*M_PI_2};
+	Sector(ColorB,Centro3,theta3,6);
+	Sector(ColorN,Centro3,theta3,5.3);
+	//------------------------------
+	//Cerco IV
+	float Centro4[2]={0.25,-0.25};
+	float theta4[2]={3*M_PI_2,2*M_PI};
+	Sector(ColorB,Centro4,theta4,6);
+	Sector(ColorN,Centro4,theta4,5.3);
+	//-----------------------------
+	//Sectores Verdes
+	float Centro5[2]={0,-1};
+	float theta5[2]={M_PI_4,3*M_PI_4};
+	Sector(ColorV,Centro5,theta5,4);
+	float Centro6[2]={0,1};
+	float theta6[2]={5*M_PI_4,7*M_PI_4};
+	Sector(ColorV,Centro6,theta6,4);
+    glFlush();
+
+}
+int main(int argc,char *argv[])
+{
+	glutInit(&argc,argv);
+	glutInitDisplayMode (GLUT_SINGLE | GLUT_RGB);
+	glutInitWindowSize (500, 500);
+	glutInitWindowPosition (100, 100);
+	glutCreateWindow ("Omnitrix");
+	init2D(0.0,0.0,0.0);
+	glutDisplayFunc(display);
+	glutMainLoop();
+
+	return EXIT_SUCCESS;
+}
